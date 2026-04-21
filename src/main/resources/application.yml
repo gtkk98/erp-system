@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: mini-erp
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/erp_system
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    # set this to validate because using Flyway to manage our schema!
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
