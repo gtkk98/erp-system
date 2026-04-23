@@ -1,11 +1,13 @@
 package com.erp.erpsystem.hr.service;
 
+import com.erp.erpsystem.common.exception.ResourceAlreadyExistsException;
 import com.erp.erpsystem.hr.dto.request.EmployeeRequest;
 import com.erp.erpsystem.hr.dto.response.EmployeeResponse;
 import com.erp.erpsystem.hr.entity.Employee;
 import com.erp.erpsystem.hr.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class EmployeeService {
 
     public EmployeeResponse createEmployee(EmployeeRequest request) {
         if (employeeRepository.existsByEmail(request.email())) {
-            throw new IllegalArgumentException("Email already in use" + request.email());
+            throw new ResourceAlreadyExistsException("Email already in use" + request.email());
         }
         // Map DTO to Entity using the Lombok Builder we added earlier
         Employee employee = Employee.builder()
@@ -37,6 +39,20 @@ public class EmployeeService {
         return employeeRepository.findAll().stream()
                 .map(this::mapToResponse)
                 .toList();
+    }
+
+    @Transactional
+    public EmployeeResponse updateEmployee(Long id, EmployeeRequest request) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        employee.setFirstName(request.firstName());
+        employee.setLastName(request.lastName());
+        employee.setEmail(request.email());
+        employee.setRole(request.role());
+        employee.setHireDate(request.hireDate());
+
+        return mapToResponse(employee);
     }
 
     private EmployeeResponse mapToResponse(Employee employee) {
