@@ -1,6 +1,6 @@
 package com.erp.erpsystem.common.exception;
 
-import com.erp.erpsystem.common.dto.ErrorResponse;
+import com.erp.erpsystem.common.dto.request.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -48,5 +48,17 @@ public class GlobalExceptionHandler {
                     errors
             );
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex) {
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Not Found",
+                ex.getMessage(),
+                null
+        );
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }
