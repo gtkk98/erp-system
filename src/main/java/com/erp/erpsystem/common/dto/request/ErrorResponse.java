@@ -1,4 +1,4 @@
-package com.erp.erpsystem.common.dto;
+package com.erp.erpsystem.common.dto.request;
 
 import java.time.LocalDateTime;
 import java.util.Map;
