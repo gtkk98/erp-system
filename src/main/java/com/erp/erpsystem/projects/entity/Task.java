@@ -35,7 +35,7 @@ public class Task {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
-    private Employee assigned;
+    private Employee assignee;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
