@@ -28,4 +28,9 @@ public class TaskController {
     public List<TaskResponse> getAllTasks() {
         return taskService.getAllTasks();
     }
+
+    @GetMapping("/employee/{employeeId}")
+    public List<TaskResponse> getTasksByEmployee(@PathVariable("employeeId") Long employeeId) {
+        return taskService.getTasksByEmployee(employeeId);
+    }
 }
