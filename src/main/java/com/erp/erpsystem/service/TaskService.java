@@ -68,4 +68,15 @@ public class TaskService {
                 assigneeName
         );
     }
+
+    public List<TaskResponse> getTasksByEmployee(Long employeeId) {
+        if (!employeeRepository.existsById(employeeId)) {
+            throw new ResourceNotFoundException("Employee not found with ID: " + employeeId);
+        }
+
+        return taskRepository.findByAssigneeId(employeeId)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
 }
